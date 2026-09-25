@@ -1,0 +1,11 @@
+project_id = "securitieslist"
+# Minimal config for `supabase functions deploy`. The ingestors authenticate
+# pg_cron with the x-cron-secret header instead of a JWT.
+[functions.ingest-wires]
+verify_jwt = false
+
+[functions.ingest-edgar]
+verify_jwt = false
+
+[functions.ingest-sec-enforcement]
+verify_jwt = false

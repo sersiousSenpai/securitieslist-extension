@@ -1,0 +1,213 @@
+{
+  "_note": "DEMO DATA. Companies, tickers and events below are fictional and exist only to exercise the extension offline. Real events come from the live ingestors.",
+  "firms": [
+    "Rosen Law Firm",
+    "Pomerantz",
+    "Levi & Korsinsky",
+    "Bragar Eagel & Squire",
+    "Glancy Prongay",
+    "Faruqi & Faruqi",
+    "Bronstein, Gewirtz & Grossman",
+    "Kessler Topaz Meltzer & Check",
+    "Robbins Geller Rudman & Dowd",
+    "Bernstein Liebhard",
+    "Schall Law Firm",
+    "Kirby McInerney",
+    "Johnson Fistel",
+    "Holzer & Holzer",
+    "Portnoy Law Firm",
+    "Law Offices of Frank R. Cruz",
+    "Howard G. Smith",
+    "Block & Leviton",
+    "Hagens Berman",
+    "Bleichmar Fonti & Auld",
+    "Gainey McKenna & Egleston",
+    "Kahn Swick & Foti",
+    "Khang & Khang",
+    "Grabar Law Office",
+    "Labaton Keller Sucharow",
+    "Berger Montague",
+    "Scott+Scott",
+    "Wolf Haldenstein",
+    "Robbins LLP",
+    "Rigrodsky Law",
+    "Halper Sadeh",
+    "Ademi Firm",
+    "Brodsky & Smith",
+    "Monteverde & Associates",
+    "Lieff Cabraser",
+    "Saxena White",
+    "Bernstein Litowitz Berger & Grossmann",
+    "Schall, Brown & Schwartz",
+    "SueWallSt",
+    "Kaplan Fox",
+    "Julie & Holleman",
+    "Lowey Dannenberg",
+    "Portnoy Law",
+    "Edelson Lechtzin",
+    "ClaimsFiler"
+  ],
+  "companies": [
+    {
+      "ticker": "NVLX",
+      "exchange": "NASDAQ",
+      "name": "Novalux Therapeutics, Inc.",
+      "aliases": [
+        "Novalux Therapeutics",
+        "Novalux"
+      ],
+      "cik": "0009990001"
+    },
+    {
+      "ticker": "QRBT",
+      "exchange": "NYSE",
+      "name": "Quorbit Robotics Corp.",
+      "aliases": [
+        "Quorbit Robotics",
+        "Quorbit"
+      ],
+      "cik": "0009990002"
+    },
+    {
+      "ticker": "HLPY",
+      "exchange": "NASDAQ",
+      "name": "Helio Payments Holdings, Inc.",
+      "aliases": [
+        "Helio Payments"
+      ],
+      "cik": "0009990003"
+    }
+  ],
+  "events": [
+    {
+      "id": "8d8a3c2e-0001-4000-8000-000000000001",
+      "ticker": "NVLX",
+      "category": "investigation",
+      "status": "investigation",
+      "event_date": "2026-09-18",
+      "severity": "high",
+      "title": "Plaintiff firms investigate Novalux over trial-data disclosures",
+      "summary": "Multiple law firms announced investigations into whether Novalux misled investors about its Phase 3 NVX-12 trial after the stock fell 41% on September 17.",
+      "alleged_conduct": "Possible misstatements about Phase 3 NVX-12 trial enrollment and interim results",
+      "firms_from_seed": 37,
+      "source_urls_from_demo": true
+    },
+    {
+      "id": "8d8a3c2e-0001-4000-8000-000000000002",
+      "ticker": "NVLX",
+      "category": "lawsuit",
+      "status": "filed",
+      "event_date": "2026-09-22",
+      "severity": "high",
+      "title": "Securities class action filed against Novalux",
+      "summary": "A shareholder filed a securities class action in the U.S. District Court for the District of Massachusetts, according to the court docket.",
+      "class_period": {
+        "start": "2025-11-04",
+        "end": "2026-09-16"
+      },
+      "lead_plaintiff_deadline": "2026-11-23",
+      "court": "D. Mass.",
+      "case_number": "1:26-cv-40117",
+      "source_urls": [
+        "http://localhost:8000/demo/docket-nvlx.html"
+      ]
+    },
+    {
+      "id": "8d8a3c2e-0001-4000-8000-000000000003",
+      "ticker": "NVLX",
+      "category": "filing",
+      "status": "open",
+      "event_date": "2026-09-17",
+      "severity": "medium",
+      "title": "8-K Item 4.01: change in certifying accountant",
+      "summary": "Novalux disclosed in an 8-K that its independent auditor resigned, per the SEC filing.",
+      "source_urls": [
+        "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0009990001&type=8-K"
+      ]
+    },
+    {
+      "id": "8d8a3c2e-0001-4000-8000-000000000004",
+      "ticker": "NVLX",
+      "category": "news",
+      "status": "open",
+      "event_date": "2026-09-17",
+      "severity": "medium",
+      "title": "Novalux shares fall after interim trial update",
+      "summary": "Wire reports attributed the drop to an interim update showing lower-than-expected enrollment in the NVX-12 trial.",
+      "source_urls": [
+        "http://localhost:8000/demo/article.html"
+      ]
+    },
+    {
+      "id": "8d8a3c2e-0002-4000-8000-000000000001",
+      "ticker": "QRBT",
+      "category": "short_report",
+      "status": "open",
+      "event_date": "2026-08-30",
+      "severity": "high",
+      "title": "Short seller alleges inflated backlog at Quorbit",
+      "summary": "A short seller alleges in a published report that Quorbit counted cancelled orders in its reported backlog. Quorbit has disputed the report.",
+      "source_urls": [
+        "http://localhost:8000/demo/short-report-qrbt.html"
+      ]
+    },
+    {
+      "id": "8d8a3c2e-0002-4000-8000-000000000002",
+      "ticker": "QRBT",
+      "category": "filing",
+      "status": "open",
+      "event_date": "2026-09-10",
+      "severity": "high",
+      "title": "8-K Item 4.02: prior financial statements should no longer be relied upon",
+      "summary": "Quorbit disclosed in an 8-K that its FY2025 financial statements should no longer be relied upon, per the SEC filing.",
+      "source_urls": [
+        "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0009990002&type=8-K"
+      ]
+    },
+    {
+      "id": "8d8a3c2e-0002-4000-8000-000000000003",
+      "ticker": "QRBT",
+      "category": "investigation",
+      "status": "investigation",
+      "event_date": "2026-09-11",
+      "severity": "high",
+      "title": "Plaintiff firms investigate Quorbit after restatement notice",
+      "summary": "Law firms announced investigations into Quorbit following its non-reliance disclosure.",
+      "alleged_conduct": "Possible misstatements in reported order backlog and revenue",
+      "firms_from_seed": 14,
+      "source_urls_from_demo": true
+    },
+    {
+      "id": "8d8a3c2e-0003-4000-8000-000000000001",
+      "ticker": "HLPY",
+      "category": "enforcement",
+      "status": "open",
+      "event_date": "2026-07-15",
+      "severity": "medium",
+      "title": "SEC administrative proceeding names Helio Payments' former CFO",
+      "summary": "The SEC instituted settled administrative proceedings against Helio Payments' former CFO over revenue-recognition disclosures, according to the SEC release.",
+      "source_urls": [
+        "https://www.sec.gov/litigation/admin.htm"
+      ]
+    },
+    {
+      "id": "8d8a3c2e-0003-4000-8000-000000000002",
+      "ticker": "HLPY",
+      "category": "lawsuit",
+      "status": "dismissed",
+      "event_date": "2026-03-02",
+      "severity": "low",
+      "title": "Earlier securities class action against Helio Payments dismissed",
+      "summary": "The court granted Helio Payments' motion to dismiss a 2025 securities class action, according to the docket.",
+      "class_period": {
+        "start": "2024-02-01",
+        "end": "2025-01-30"
+      },
+      "court": "S.D.N.Y.",
+      "case_number": "1:25-cv-01188",
+      "source_urls": [
+        "http://localhost:8000/demo/docket-hlpy.html"
+      ]
+    }
+  ]
+}
