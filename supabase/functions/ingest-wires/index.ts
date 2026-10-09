@@ -15,7 +15,6 @@ import { db, companyByTicker, findCompany } from "../_shared/db.ts";
 import { extractReleaseFacts } from "../_shared/extract.ts";
 import {
   exchangeTicker,
-  exchangeTickers,
   gnwReleaseDate,
   gnwReleaseId,
   kindHint,
@@ -24,6 +23,7 @@ import {
   parseGnwRelease,
   parseGnwSearchPage,
   releaseText,
+  subjectTickers,
 } from "../_shared/feeds.js";
 import { urlHash } from "../_shared/canonical.js";
 
@@ -104,13 +104,8 @@ async function processItem(item: Item, knownFirms: string[], html?: string) {
   const firm = matchFirm(knownFirms, item.contributor, item.title, item.description);
   if (!firm) return { skipped: "no known firm" };
 
-  // The ticker is often only in the body: page metadata can be truncated before it.
   const body = releaseText(html ?? (await fetchText(item.link!)));
-  // If the metadata names exactly one ticker, that is the subject even when the
-  // body mentions others (an acquirer, a peer); only then is it not a roundup.
-  const inMeta = exchangeTickers(`${item.keywords.join(" ")}\n${item.title}`);
-  const tickers =
-    inMeta.length === 1 ? inMeta : exchangeTickers(`${item.keywords.join(" ")}\n${item.title}\n${item.description}\n${body}`);
+  const { headline, tickers } = subjectTickers(item, body);
   if (!tickers.length) return { skipped: "no exchange ticker" };
   const url = item.link!;
   const hash = (await urlHash(url))!;
@@ -118,8 +113,9 @@ async function processItem(item: Item, knownFirms: string[], html?: string) {
   const hint = kindHint(`${item.title}\n${item.description}\n${body.slice(0, 2000)}`);
 
   // Roundups ("DEADLINE ALERT for FCEL, BBNX, DKS...") remind investors of
-  // several existing cases. They join those events but never create one.
-  if (tickers.length > 1) {
+  // several existing cases. They join those events but never create one. Only
+  // the title and keywords can make a release a roundup.
+  if (headline.length > 1) {
     const joined: string[] = [];
     for (const t of tickers) {
       const company = hint && (await findCompany(t.ticker));
@@ -176,9 +172,18 @@ async function processItem(item: Item, knownFirms: string[], html?: string) {
     return { event: created.id, created: true };
   }
 
-  // lawsuit_filed: one event per class period.
+  // lawsuit_filed: one open suit per company per year. Extracted class periods
+  // vary between releases about the same suit, so they can't be the key.
+  // A period is kept only when it is coherent (start before end).
+  if (!(facts.class_period_start && facts.class_period_end && facts.class_period_start < facts.class_period_end)) {
+    facts.class_period_start = null;
+    facts.class_period_end = null;
+  }
   const dedupe = `lawsuit:${listed.ticker}:${facts.class_period_start ?? "?"}:${facts.class_period_end ?? "?"}`;
-  const { data: existing } = await db.from("events").select("id, lead_plaintiff_deadline").eq("dedupe_key", dedupe).maybeSingle();
+  const openSuit = await openEvent(company.id, "lawsuit_filed");
+  const existing = openSuit
+    ? (await db.from("events").select("id, lead_plaintiff_deadline").eq("id", openSuit.id).single()).data
+    : (await db.from("events").select("id, lead_plaintiff_deadline").eq("dedupe_key", dedupe).maybeSingle()).data;
   if (existing) {
     await appendRelease(existing.id, url, hash, firm, published);
     if (!existing.lead_plaintiff_deadline && facts.lead_plaintiff_deadline) {

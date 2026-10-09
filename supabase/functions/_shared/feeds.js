@@ -73,6 +73,20 @@ export function exchangeTickers(text) {
   return [...seen.values()];
 }
 
+// Tickers a release is about. They come from its own metadata (keywords and
+// title, then the meta description). Never scan the whole body: GlobeNewswire
+// pages end with a related-news list naming other companies' tickers. Only when
+// the metadata has none (it can be truncated) take the first ticker in the lead
+// paragraphs. `headline` is what the title and keywords name; a release is a
+// multi-company roundup only when that has 2+.
+export function subjectTickers(item, body) {
+  const headline = exchangeTickers(`${item.keywords.join(" ")}\n${item.title}`);
+  if (headline.length) return { headline, tickers: headline };
+  const described = exchangeTickers(item.description);
+  if (described.length) return { headline, tickers: described };
+  return { headline, tickers: exchangeTickers((body ?? "").slice(0, 1500)).slice(0, 1) };
+}
+
 // Known firm names are short forms ("Rosen Law Firm"); releases and the
 // contributor field use longer ones ("The Rosen Law Firm PA"). Substring match.
 export function matchFirm(firms, ...texts) {

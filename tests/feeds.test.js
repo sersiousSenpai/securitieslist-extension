@@ -99,3 +99,19 @@ test("exchangeTickers finds every listed company in a roundup, once each", () =>
   assert.deepEqual(exchangeTickers(text).map((t) => t.ticker), ["FCEL", "BBNX", "DKS"]);
   assert.deepEqual(exchangeTickers("no tickers"), []);
 });
+
+import { subjectTickers } from "../supabase/functions/_shared/feeds.js";
+
+test("subject tickers ignore the related-news list at the bottom of a release", () => {
+  const related = "\nMore news from GlobeNewswire\nRackspace (NASDAQ: RXT) investors ...\nWix (NASDAQ: WIX) alert ...\n".repeat(3);
+  const lead = "NEW YORK (GLOBE NEWSWIRE) -- Firm investigates Beta Bionics, Inc. (NASDAQ: BBNX). " + "x".repeat(2000);
+  const noMeta = { keywords: [], title: "Investor alert", description: "" };
+  assert.deepEqual(subjectTickers(noMeta, lead + related).tickers.map((t) => t.ticker), ["BBNX"]);
+  assert.equal(subjectTickers(noMeta, lead + related).headline.length, 0);
+
+  const meta = { keywords: ["NASDAQ: FLNC"], title: "Fluence investor news", description: "" };
+  assert.deepEqual(subjectTickers(meta, lead + related).tickers.map((t) => t.ticker), ["FLNC"]);
+
+  const roundup = { keywords: ["NASDAQ: FCEL", "NASDAQ: BBNX", "NYSE: DKS"], title: "DEADLINE ALERT", description: "" };
+  assert.equal(subjectTickers(roundup, related).headline.length, 3);
+});
